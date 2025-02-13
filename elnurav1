@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>💞 Эльнура - Моя Вечная Любовь</title>
+  <style>
+    /* Глобальные стили */
+    :root {
+      --primary: #ff2b6e;
+      --secondary: #ff8fab;
+      --text: #5a2a38;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+    body {
+      font-family: 'Pacifico', cursive;
+      background: linear-gradient(45deg, #fff0f5, #ffe4e1);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Анимированный фон */
+    .love-particles {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      opacity: 0.5;
+      animation: particle-float 15s linear infinite;
+    }
+    @keyframes particle-float {
+      0% { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-20vh) rotate(720deg); }
+    }
+    
+    /* Главный контейнер */
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* Интерактивный заголовок */
+    .main-title {
+      text-align: center;
+      font-size: 3rem;
+      margin: 2rem 0;
+      transform-style: preserve-3d;
+    }
+    .main-title span {
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .main-title span:hover {
+      transform: rotateY(20deg) scale(1.2);
+      color: var(--primary);
+    }
+    
+    /* Love Timeline */
+    .timeline {
+      position: relative;
+      padding: 2rem 0;
+    }
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      position: relative;
+      width: 90%;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: rgba(255,255,255,0.9);
+      border-radius: 20px;
+      box-shadow: 0 5px 25px rgba(255,43,110,0.1);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+    .timeline-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .timeline-item:nth-child(even) {
+      margin-left: 10%;
+    }
+    .timeline-item:nth-child(odd) {
+      margin-right: 10%;
+    }
+    .timeline-item:hover {
+      transform: translateY(0) scale(1.02);
+    }
+    
+    /* Extra контент (для скролла вниз) */
+    .extra-content {
+      padding: 4rem 1rem;
+      background: rgba(255,235,245,0.7);
+      border-top: 4px dashed var(--secondary);
+      margin-top: 2rem;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .extra-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .extra-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin: 0.5rem 0;
+    }
+    
+    /* Интерактивное сердце */
+    .heart-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .heart-core {
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      position: relative;
+      transform: rotate(45deg);
+      transition: all 0.3s ease;
+      animation: heartbeat 1.2s infinite;
+    }
+    .heart-core::before,
+    .heart-core::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      border-radius: 50%;
+      position: absolute;
+    }
+    .heart-core::before { top: -50%; left: 0; }
+    .heart-core::after { left: 50%; top: 0; }
+    @keyframes heartbeat {
+      0%, 100% { transform: rotate(45deg) scale(1); }
+      50% { transform: rotate(45deg) scale(1.2); }
+    }
+    
+    /* Секретное сообщение */
+    .secret-message {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      padding: 2rem;
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+    }
+    .secret-message.active {
+      bottom: 0;
+    }
+    
+    /* Стрелка скролла вниз */
+    .scroll-down {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      color: var(--primary);
+      cursor: pointer;
+      z-index: 1000;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+    
+    /* Эффект поцелуя от котёнка */
+    .kitten-kiss {
+      position: fixed;
+      width: 100px;
+      height: auto;
+      z-index: 1001;
+      animation: kittenKissAnim 3s ease-out forwards;
+    }
+    @keyframes kittenKissAnim {
+      0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+      50% { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(1.2) translateY(-50px); }
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .main-title { font-size: 2rem; }
+      .timeline-line { left: 20px; }
+      .timeline-item {
+        width: 100%;
+        margin: 2rem 0;
+      }
+      .timeline-item:nth-child(even),
+      .timeline-item:nth-child(odd) {
+        margin: 2rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="love-particles" id="particles"></div>
+
+  <div class="container">
+    <h1 class="main-title">
+      <span>Э</span><span>л</span><span>ь</span><span>н</span><span>у</span><span>р</span><span>а</span>
+    </h1>
+
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-item">
+        <h2>Наша первая встреча ✨</h2>
+        <p>Тот день, когда всё изменилось...</p>
+      </div>
+
+      <div class="timeline-item">
+        <h2>Первый разговор 💬</h2>
+        <p>Твои слова запали мне в душу</p>
+      </div>
+
+      <div class="timeline-item">
+        <h2>Первое свидание 🌹</h2>
+        <p>Незабываемые моменты счастья</p>
+      </div>
+
+      <div class="timeline-item">
+        <h2>Наша первая улыбка 😊</h2>
+        <p>В тот момент, когда наши взгляды встретились, мир засверкал новыми красками.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h2>Первый подарок 🎁</h2>
+        <p>Каждый мелкий жест был наполнен нежностью и заботой.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h2>Наши мечты и планы ✨</h2>
+        <p>Вместе мы верим в чудеса и строим будущее, полное любви.</p>
+      </div>
+    </div>
+
+    <div id="extra" class="extra-content">
+      <h2>Наша сказочная история продолжается...</h2>
+      <p>Каждый миг, проведенный вместе, превращается в волшебные воспоминания.</p>
+      <p>Ты даришь свет и тепло, делая каждый день особенным.</p>
+      <p>Давай мечтать, любить и создавать нашу прекрасную историю вместе!</p>
+    </div>
+  </div>
+
+  <!-- Стрелка для скролла вниз -->
+  <div class="scroll-down" id="scrollDown">⬇</div>
+
+  <div class="heart-container" id="heart">
+    <div class="heart-core"></div>
+  </div>
+
+  <div class="secret-message" id="secret">
+    <h3>Ты - смысл моей жизни! 💖</h3>
+    <p>С каждым днём люблю тебя всё сильнее</p>
+  </div>
+
+  <script>
+    // Генератор частиц (падающие сердечки и комплименты)
+    const particles = document.getElementById('particles');
+    function createParticle() {
+      const types = ['❤️', '💖', '💕', '💞'];
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.textContent = types[Math.floor(Math.random() * types.length)];
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.fontSize = `${Math.random() * 20 + 10}px`;
+      particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      particles.appendChild(particle);
+      setTimeout(() => particle.remove(), 15000);
+    }
+    setInterval(createParticle, 500);
+
+    // Случайные комплименты (появляются каждые 3 секунды)
+    const compliments = [
+      "Ты прекрасна! 🌸",
+      "Твой смех - музыка для моей души 🎶",
+      "Ты моё вдохновение 💫",
+      "С тобой я обрёл смысл жизни 🌟",
+      "Ты совершенна во всём 💖"
+    ];
+    setInterval(() => {
+      const bubble = document.createElement('div');
+      bubble.className = 'particle';
+      bubble.textContent = compliments[Math.floor(Math.random() * compliments.length)];
+      bubble.style.cssText = `
+        left: ${Math.random() * 90 + 5}vw;
+        font-size: 1.2rem;
+        animation-duration: 8s;
+        color: var(--primary);
+      `;
+      particles.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 8000);
+    }, 3000);
+
+    // Анимация таймлайна при скролле
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    function checkScroll() {
+      timelineItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.8) {
+          item.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', checkScroll);
+    checkScroll();
+
+    // Интерактивное сердце, секретное сообщение, конфетти и поцелуй от котёнка
+    let clickCount = 0;
+    const heart = document.getElementById('heart');
+    const secret = document.getElementById('secret');
+    heart.addEventListener('click', () => {
+      clickCount++;
+      secret.classList.toggle('active');
+      
+      // Каждые 3 клика меняется основной цвет
+      if (clickCount % 3 === 0) {
+        document.documentElement.style.setProperty('--primary', `hsl(${Math.random() * 360}, 70%, 60%)`);
+      }
+      
+      // Каждые 5 кликов – всплеск конфетти (маленькие сердечки)
+      if (clickCount % 5 === 0) {
+        const heartRect = heart.getBoundingClientRect();
+        const centerX = heartRect.left + heartRect.width / 2;
+        const centerY = heartRect.top + heartRect.height / 2;
+        confettiBurst(centerX, centerY);
+      }
+      
+      // Каждые 7 кликов – поцелуй от котёнка!
+      if (clickCount % 7 === 0) {
+        const kittenKiss = document.createElement('img');
+        kittenKiss.src = 'https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif';
+        kittenKiss.classList.add('kitten-kiss');
+        const heartRect = heart.getBoundingClientRect();
+        kittenKiss.style.left = (heartRect.left + heartRect.width / 2 - 50) + 'px';
+        kittenKiss.style.top = (heartRect.top - 80) + 'px';
+        document.body.appendChild(kittenKiss);
+        setTimeout(() => {
+          kittenKiss.remove();
+        }, 3000);
+      }
+    });
+    
+    function confettiBurst(x, y) {
+      for (let i = 0; i < 12; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'particle';
+        const types = ['❤️', '💖', '💕', '💞'];
+        confetti.textContent = types[Math.floor(Math.random() * types.length)];
+        confetti.style.position = 'fixed';
+        confetti.style.left = x + 'px';
+        confetti.style.top = y + 'px';
+        confetti.style.fontSize = `${Math.random() * 20 + 10}px`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 3}s`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 8000);
+      }
+    }
+    
+    // Параллакс эффект при движении мыши
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      document.documentElement.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    
+    // Свайп-навигация для мобильных устройств
+    let touchStartY = 0;
+    document.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    });
+    document.addEventListener('touchend', e => {
+      const touchEndY = e.changedTouches[0].clientY;
+      if (touchStartY - touchEndY > 50) {
+        window.scrollBy(0, window.innerHeight * 0.8);
+      }
+    });
+    
+    // Обработчик клика по стрелке скролла вниз
+    const scrollDown = document.getElementById('scrollDown');
+    scrollDown.addEventListener('click', () => {
+      const extra = document.getElementById('extra');
+      if (extra) {
+        extra.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
